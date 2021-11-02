@@ -2,7 +2,7 @@ const level = require('level');
 const { createResponse, createError } = require('../response/response');
 const { checkUser, combineUser } = require('./userFuncs');
 
-const cannotHandleErrorMessage = "Cannot handle actions other than GET/POST/ACT.";
+const cannotHandleErrorMessage = "UserSystem cannot handle actions other than GET/POST/ACT.";
 const notFoundHandleErrorMessage = "User id not found.";
 
 const postUserSucceedMessage = "User has been successfully updated.";

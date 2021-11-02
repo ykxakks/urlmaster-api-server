@@ -6,8 +6,9 @@ const userRouter = express.Router();
 const userSystem = new UserSystem();
 setTestUsers(userSystem);
 
-// GET http://localhost:8080/api/v1/users/{userId}
+// GET http://localhost:8080/api/v1/user/{userId}
 userRouter.get("/:userId", async (req, res) => {
+    console.log("getting userId");
     const userId = req.params.userId;
     const userResponse = await userSystem.dispatch({
         type: "GET", 
@@ -23,9 +24,8 @@ userRouter.get("/:userId", async (req, res) => {
     }
 });
 
-// POST http://localhost:8080/api/v1/users/{userID} -d {user-content-stringified-json}
+// POST http://localhost:8080/api/v1/user/{userID} -d {user-content-stringified-json}
 userRouter.post("/:userId", async (req, res) => {
-    console.log("here");
     const contentType = req.headers['content-type'];
     if (!contentType || contentType !== 'application/json') {
         res.status(400).send({error: "POST request for users must have content-type as application/json."});
@@ -47,12 +47,13 @@ userRouter.post("/:userId", async (req, res) => {
     }
 });
 
-// GET http://localhost:8080/api/v1/users/activate/{userId}?code={validationCode}
+// GET http://localhost:8080/api/v1/user/activate/{userId}?code={validationCode}
 userRouter.get("/activate/:userId", async (req, res) => {
     console.log("query =", req.query);
     const code = req.query.code;
     if (!code) {
         res.status(400).send({ error: "No activation code provided."});
+        return ;
     }
     const userId = req.params.userId;
     const userResponse = await userSystem.dispatch({

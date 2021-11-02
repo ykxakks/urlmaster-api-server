@@ -48,7 +48,8 @@ function combineUser(user, existUser) {
     if (!existUser) {
         const info = newUserActInfo({code: user.code});
         const resUser = newUser({mail: user.mail});
-        // console.log(info, resUser);
+        // when creating a user, only mail and code will be recorded
+        // other info must be added afterwards
         return { userActInfo: info, combinedUser: resUser };
     }
     // otherwise, we should combine the information to existUser

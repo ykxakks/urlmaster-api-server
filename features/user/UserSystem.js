@@ -87,6 +87,7 @@ function UserSystem() {
                         return createError(invalidUserMessage, 400);
                     }
                 }
+                break;
             }
             case 'ACT': {
                 // trying to activate user account
@@ -107,6 +108,7 @@ function UserSystem() {
                 } else {
                     return createError(activationCodeErrorMessage, 400);
                 }
+                break;
             }
             default: {
                 return createError(cannotHandleErrorMessage, 400);

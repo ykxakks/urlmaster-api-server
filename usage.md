@@ -19,7 +19,7 @@ GET http://localhost:8080/api/v1/users/{userId}
 
 To change the course content:
 ```
-POST http://localhost:8080/api/v1/users/{userID} {user-content-stringified-json}
+POST http://localhost:8080/api/v1/users/{userID} -d {user-content-stringified-json}
 ```
 
 ## search courses by query
@@ -34,7 +34,7 @@ Only the name & course id will be returned. Parameter "max" is for the maximum n
 
 ## try to activate user account
 ```
-GET http://localhost:8080/api/v1/users/activate?id={userId}&code={validationCode}
+GET http://localhost:8080/api/v1/users/activate/{userId}?code={validationCode}
 ```
 
 Use GET here, so it can be achieved by sending user an email with this link.

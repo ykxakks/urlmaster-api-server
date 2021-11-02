@@ -57,7 +57,7 @@ function combineUser(user, existUser) {
         res.alias = {...user.alias};
     }
     if (user.courses) {
-        res.courses = {...user.courses};
+        res.courses = [...user.courses];
     }
     return {combinedUser: res};
 }

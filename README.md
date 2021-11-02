@@ -8,6 +8,11 @@ install dependencies
 yarn install
 ```
 
+create database folder:
+```console
+mkdir leveldb
+```
+
 start
 
 ```
@@ -15,6 +20,10 @@ yarn dev
 ```
 
 access http://localhost:8080/api/v1/hello
+
+## Test user server
+
+Access http://localhost:8080/api/v1/user/123 to see a pre-created user info. Also access http://localhost:8080/api/v1/user/124 to see a response with user not existing.
 
 #### 環境変数
 

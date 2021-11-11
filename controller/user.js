@@ -6,9 +6,23 @@ const userRouter = express.Router();
 const userSystem = new UserSystem();
 setTestUsers(userSystem);
 
+// GET http://localhost:8080/api/v1/user/all
+userRouter.get("/all", async (req, res) => {
+    const userResponse = await userSystem.dispatch({
+        type: "ALL"
+    });
+
+    if (userResponse.status === 'success') {
+        res.json(userResponse.response);
+    } else {
+        console.log(userResponse);
+        const status = userResponse.code || 500;
+        res.status(status).send({ error: userResponse.msg });
+    }
+});
+
 // GET http://localhost:8080/api/v1/user/{userId}
 userRouter.get("/:userId", async (req, res) => {
-    console.log("getting userId");
     const userId = req.params.userId;
     const userResponse = await userSystem.dispatch({
         type: "GET", 

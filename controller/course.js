@@ -6,7 +6,20 @@ const courseRouter = express.Router();
 const courseSystem = new CourseSystem();
 setTestCourses(courseSystem);
 
-// GET http://localhost:8080/api/v1/users/{userId}
+// GET http://localhost:8080/api/v1/course/all
+courseRouter.get("/all", async (req, res) => {
+    const courseResponse = await courseSystem.dispatch({
+        type: "ALL"
+    });
+    if (courseResponse.status === 'success') {
+        res.json(courseResponse.response);
+    } else {
+        const status = courseResponse.code || 500;
+        res.status(status).send({ error: courseResponse.msg });
+    }
+});
+
+// GET http://localhost:8080/api/v1/course/{courseId}
 courseRouter.get("/:courseId", async (req, res) => {
     const courseId = req.params.courseId;
     const courseResponse = await courseSystem.dispatch({
@@ -22,7 +35,7 @@ courseRouter.get("/:courseId", async (req, res) => {
     }
 });
 
-// POST http://localhost:8080/api/v1/users/{userID} -d {user-content-stringified-json}
+// POST http://localhost:8080/api/v1/course/{courseId} -d {course-content-stringified-json}
 courseRouter.post("/:courseId", async (req, res) => {
     const contentType = req.headers['content-type'];
     if (!contentType || contentType !== 'application/json') {

@@ -52,6 +52,21 @@ function CourseSystem() {
             });
         });
     }
+    this.getCourseList = async () => {
+        const courseArray = [];
+        return new Promise((resolve, reject) => {
+            this.filterDB.createReadStream()
+            .on('data', (data) => {
+                courseArray.push(data.key);
+            })
+            .on('error', err => {
+                reject(err);
+            })
+            .on('close', () => {
+                resolve(courseArray);
+            });
+        });
+    }
 
     this.dispatch = async (action) => {
         switch (action.type) {
@@ -105,13 +120,22 @@ function CourseSystem() {
                 const courseIds = await this.getFilteredCourses({day, period});
                 const courses = await Promise.all(courseIds.map(async (id) => {
                     const course = await this.getCourse(id);
-                    return {id, name: course.name};
+                    return {code: id, name: course.name};
                 }));
 
                 return createResponse(courses);
 
                 // we need to load all data from this.filterDB
                 // maybe a better idea is to use SQL?
+            }
+            case 'ALL': {
+                const courseIds = await this.getCourseList();
+                const courses = await Promise.all(courseIds.map(async (id) => {
+                    const course = await this.getCourse(id);
+                    return {code: id, name: course.name};
+                }));
+
+                return createResponse(courses);
             }
             default: {
                 return createError(cannotHandleErrorMessage, 400);

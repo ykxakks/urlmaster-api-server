@@ -33,6 +33,23 @@ function UserSystem() {
     this.setUser = async (userId, user) => {
         return this.db.put(userId, user);
     }
+    this.getUserIdList = async () => {
+        const userIdArray = [];
+        return new Promise((resolve, reject) => {
+            this.actDB.createReadStream()
+            .on('data', (data) => {
+                if (data.value.activated) {
+                    userIdArray.push(data.key);
+                }
+            })
+            .on('error', err => {
+                reject(err);
+            })
+            .on('close', () => {
+                resolve(userIdArray);
+            });
+        });
+    }
     this.setUserActInfo = async (userId, info) => {
         return this.actDB.put(userId, info);
     }
@@ -109,6 +126,10 @@ function UserSystem() {
                     return createError(activationCodeErrorMessage, 400);
                 }
                 break;
+            }
+            case 'ALL': {
+                const userIds = await this.getUserIdList();
+                return createResponse(userIds);
             }
             default: {
                 return createError(cannotHandleErrorMessage, 400);

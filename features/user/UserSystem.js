@@ -83,15 +83,17 @@ function UserSystem() {
                 const user = action.user;
                 const id = action.id;
                 const existUser = await this.getUser(id);
+                const actInfo = await this.getUserActInfo(id);
                 // console.log(existUser);
                 const checkUserResult = checkUser(user, existUser);
                 if (checkUserResult.ok) {
                     // console.log("OK!");
-                    const { userActInfo, combinedUser } = combineUser(user, existUser);
-                    // console.log(userActInfo, combinedUser);
+                    const { userActInfo, combinedUser } = combineUser(user, existUser, actInfo);
+                    // console.log(`act info = ${userActInfo}, user = ${combinedUser}`);
+                    console.log("act info =", userActInfo, ", user =", combinedUser);
                     const err = await this.setUser(id, combinedUser);
                     // if user not exist: then we have also actInfo to be added
-                    const actErr = (!existUser) && (await this.setUserActInfo(id, userActInfo));
+                    const actErr = (userActInfo) && (await this.setUserActInfo(id, userActInfo));
                     // TODO: we must set the two values simultaneously!
                     if (err || actErr) {
                         return createError(postUserFailMessage, 500);

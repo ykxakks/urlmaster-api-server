@@ -40,7 +40,7 @@ function checkUser(user, existUser) {
     return { ok: true };
 }
 
-function combineUser(user, existUser) {
+function combineUser(user, existUser, actInfo) {
     // console.log(user, existUser);
     // usage: const { userActInfo, combinedUser } = combineUser(user, existUser);
 
@@ -60,7 +60,16 @@ function combineUser(user, existUser) {
     if (user.courses) {
         res.courses = [...user.courses];
     }
-    return {combinedUser: res};
+    const result = {combinedUser: res};
+    if (actInfo && user.hasOwnProperty('code')) {
+        // update info
+        console.log('updating info: ', actInfo, user);
+        result.userActInfo = {
+            ...actInfo,
+        };
+        result.userActInfo.code = user.code;
+    };
+    return result;
 }
 
 function setTestUsers(userSystem) {

@@ -46,13 +46,14 @@ userRouter.post("/:userId", async (req, res) => {
     } else {
         const userId = req.params.userId;
         const content = req.body;
+        console.log(userId, content);
         const userResponse = await userSystem.dispatch({
             type: "POST",
             id: userId,
             user: content
         });
         if (userResponse.status === 'success') {
-            res.send(userResponse.response);
+            res.json({msg: userResponse.response});
         } else {
             console.log(userResponse);
             const status = userResponse.code || 500;
@@ -76,7 +77,7 @@ userRouter.get("/activate/:userId", async (req, res) => {
         code: code
     });
     if (userResponse.status === 'success') {
-        res.send(userResponse.response);
+        res.json({msg: userResponse.response});
     } else {
         console.log(userResponse);
         const status = userResponse.code || 500;

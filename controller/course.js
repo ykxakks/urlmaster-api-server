@@ -49,7 +49,7 @@ courseRouter.post("/:courseId", async (req, res) => {
             course: content
         });
         if (courseResponse.status === 'success') {
-            res.send(courseResponse.response);
+            res.send({msg: courseResponse.response});
         } else {
             console.log(courseResponse);
             const status = courseResponse.code || 500;
@@ -67,7 +67,7 @@ courseRouter.get('/search/query', async (req, res) => {
         day, period
     });
     if (courseResponse.status === 'success') {
-        res.send(courseResponse.response);
+        res.json(courseResponse.response);
     } else {
         console.log(courseResponse);
         const status = courseResponse.code || 500;
